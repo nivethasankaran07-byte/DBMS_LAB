@@ -1,0 +1,188 @@
+mysql> USE company;
+Database changed
+
+
+mysql> DROP TABLE IF EXISTS employee;
+Query OK, 0 rows affected
+
+
+mysql> CREATE TABLE employee (
+    -> emp_no INT PRIMARY KEY,
+    -> emp_name VARCHAR(20),
+    -> emp_address VARCHAR(100),
+    -> emp_ph_no VARCHAR(10),
+    -> dept_name VARCHAR(50),
+    -> job_id CHAR(10),
+    -> salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected
+
+
+mysql> DESCRIBE employee;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| emp_no      | int           | NO   | PRI | NULL    |       |
+| emp_name    | varchar(20)   | YES  |     | NULL    |       |
+| emp_address | varchar(100)  | YES  |     | NULL    |       |
+| emp_ph_no   | varchar(10)   | YES  |     | NULL    |       |
+| dept_name   | varchar(50)   | YES  |     | NULL    |       |
+| job_id      | char(10)      | YES  |     | NULL    |       |
+| salary      | decimal(10,2) | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+7 rows in set
+
+
+mysql> ALTER TABLE employee ADD hiredate DATE;
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> ALTER TABLE employee MODIFY job_id VARCHAR(10);
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> ALTER TABLE employee RENAME COLUMN emp_no TO e_no;
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> ALTER TABLE employee MODIFY job_id VARCHAR(20);
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> ALTER TABLE employee MODIFY emp_name VARCHAR(50) NOT NULL;
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> ALTER TABLE employee
+    -> ADD CONSTRAINT chk_salary CHECK (salary > 0);
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> DESCRIBE employee;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| e_no        | int           | NO   | PRI | NULL    |       |
+| emp_name    | varchar(50)   | NO   |     | NULL    |       |
+| emp_address | varchar(100)  | YES  |     | NULL    |       |
+| emp_ph_no   | varchar(10)   | YES  |     | NULL    |       |
+| dept_name   | varchar(50)   | YES  |     | NULL    |       |
+| job_id      | varchar(20)   | YES  |     | NULL    |       |
+| salary      | decimal(10,2) | YES  |     | NULL    |       |
+| hiredate    | date          | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+8 rows in set
+
+
+mysql> INSERT INTO employee
+    -> VALUES (1, 'john doe', '123 main st', '101', 'sales', 'j1001',
+    -> 50000.00, '2020-08-24');
+Query OK, 1 row affected
+
+
+mysql> INSERT INTO employee
+    -> VALUES (2, 'jane smith', '456 oak st', '102', 'marketing', 'j1002',
+    -> 60000.00, '2018-06-04');
+Query OK, 1 row affected
+
+
+mysql> INSERT INTO employee
+    -> VALUES (3, 'alice johnson', '789 pine st', '103', 'HR', 'j1003',
+    -> 55000.00, '2015-07-04');
+Query OK, 1 row affected
+
+
+mysql> INSERT INTO employee
+    -> VALUES (4, 'alice bob', '112 apple st', '104', 'admin', 'j1004',
+    -> 45000.00, '2015-03-04');
+Query OK, 1 row affected
+
+
+mysql> SELECT * FROM employee;
++------+---------------+--------------+-----------+-----------+--------+----------+------------+
+| e_no | emp_name      | emp_address  | emp_ph_no | dept_name | job_id | salary   | hiredate   |
++------+---------------+--------------+-----------+-----------+--------+----------+------------+
+|    1 | john doe      | 123 main st  | 101       | sales     | j1001  | 50000.00 | 2020-08-24 |
+|    2 | jane smith    | 456 oak st   | 102       | marketing | j1002  | 60000.00 | 2018-06-04 |
+|    3 | alice johnson | 789 pine st  | 103       | HR        | j1003  | 55000.00 | 2015-07-04 |
+|    4 | alice bob     | 112 apple st | 104       | admin     | j1004  | 45000.00 | 2015-03-04 |
++------+---------------+--------------+-----------+-----------+--------+----------+------------+
+4 rows in set
+
+
+mysql> UPDATE employee
+    -> SET salary = 55000.00
+    -> WHERE e_no = 1;
+Query OK, 1 row affected
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql> UPDATE employee
+    -> SET salary = 55000.00
+    -> WHERE e_no = 2;
+Query OK, 1 row affected
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql> UPDATE employee
+    -> SET dept_name = 'digital marketing'
+    -> WHERE e_no = 2;
+Query OK, 1 row affected
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql> SELECT * FROM employee;
++------+---------------+--------------+-------------------+--------+----------+------------+
+| e_no | emp_name      | emp_address  | emp_ph_no | dept_name         | job_id | salary   | hiredate   |
++------+---------------+--------------+-----------+-------------------+--------+----------+------------+
+|    1 | john doe      | 123 main st  | 101       | sales             | j1001  | 55000.00 | 2020-08-24 |
+|    2 | jane smith    | 456 oak st   | 102       | digital marketing | j1002  | 55000.00 | 2018-06-04 |
+|    3 | alice johnson | 789 pine st  | 103       | HR                | j1003  | 55000.00 | 2015-07-04 |
+|    4 | alice bob     | 112 apple st | 104       | admin             | j1004  | 45000.00 | 2015-03-04 |
++------+---------------+--------------+-------------------+--------+----------+------------+
+4 rows in set
+
+
+mysql> DELETE FROM employee
+    -> WHERE emp_name = 'alice johnson';
+Query OK, 1 row affected
+
+
+mysql> SELECT * FROM employee;
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+| e_no | emp_name   | emp_address  | emp_ph_no | dept_name         | job_id | salary   | hiredate   |
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+|    1 | john doe   | 123 main st  | 101       | sales             | j1001  | 55000.00 | 2020-08-24 |
+|    2 | jane smith | 456 oak st   | 102       | digital marketing | j1002  | 55000.00 | 2018-06-04 |
+|    4 | alice bob  | 112 apple st | 104       | admin             | j1004  | 45000.00 | 2015-03-04 |
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+3 rows in set
+
+
+mysql> DELETE FROM employee
+    -> WHERE emp_address = '123 main st';
+Query OK, 1 row affected
+
+
+mysql> SELECT * FROM employee;
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+| e_no | emp_name   | emp_address  | emp_ph_no | dept_name         | job_id | salary   | hiredate   |
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+|    2 | jane smith | 456 oak st   | 102       | digital marketing | j1002  | 55000.00 | 2018-06-04 |
+|    4 | alice bob  | 112 apple st | 104       | admin             | j1004  | 45000.00 | 2015-03-04 |
++------+------------+--------------+-----------+-------------------+--------+----------+------------+
+2 rows in set
+
+
+mysql> TRUNCATE TABLE employee;
+Query OK, 0 rows affected
+
+
+mysql> SELECT * FROM employee;
+Empty set
